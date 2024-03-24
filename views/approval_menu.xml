@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="approval_approval_view_kanban" model="ir.ui.view">
+        <field name="name">approval.approval.kanban</field>
+        <field name="model">approval.approval</field>
+        <field name="arch" type="xml">
+            <kanban default_order="id asc">
+                <field name="id"/>
+                <field name="approval_subject"/>
+                <field name="request_owner"/>
+                <field name="date"/>
+                <field name="period"/>
+                <field name="location"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <ul>
+                                    <li>
+                                        Approval Subject:
+                                        <field name="approval_subject"/>
+                                    </li>
+                                    <li>
+                                        Request Owner:
+                                        <field name="request_owner"/>
+                                    </li>
+                                    <li>
+                                        Date:
+                                        <field name="date"/>
+                                    </li>
+                                    <li>
+                                        Contact:
+                                        <field name="contact"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <record id="view_approval_tree" model="ir.ui.view">
+        <field name="name">approval.approval.tree</field>
+        <field name="model">approval.approval</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="id"/>
+                <field name="approval_subject"/>
+                <field name="request_owner"/>
+                <field name="date"/>
+                <field name="period"/>
+                <field name="location"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_approval_form" model="ir.ui.view">
+        <field name="name">approval.approval.form</field>
+        <field name="model">approval.approval</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button id="button_to_submit" name="action_to_submit" string="TO SUBMIT" class="btn-primary"
+                            states="cancel" confirm="Are you sure that you need to submit?"
+                            type="object"/>
+                    <button id="button_submitted" name="action_submitted" string="SUBMITTED" class="btn-primary"
+                            states="to_submit" type="object"/>
+                    <button id="button_approved" name="action_approved" string="APPROVED" class="btn-primary"
+                            states="submitted" type="object"/>
+                    <button id="button_refused" name="action_refused" string="REFUSED" class="btn-primary"
+                            states="approved" type="object"/>
+                    <button id="button_cancel" name="action_cancel" string="Cancel" states="refused"
+                            type="object" />
+
+                    <field name="state" widget="statusbar" statusbar_visible="to_submit,submitted,approved,refused"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference" readonly="1"/>
+                        </h1>
+                        <h1>
+                            <field name="approval_subject"  placeholder="Approval Subject  "/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="request_owner"/>
+                            <field name="category"/>
+                            <field name="date"/>
+                            <field name="period">
+                                <field name="from_period"/>
+                                <field name="to_period"/>
+                            </field>
+                            <field name="location"/>
+                            <field name="contact"/>
+                        </group>
+                        <group>
+                            <field name="amount"/>
+                            <field name="reference"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="approval_search" model="ir.ui.view">
+        <field name="name">approval.approval.search</field>
+        <field name="model">approval.approval</field>
+        <field name="arch" type="xml">
+            <search string="Approval">
+                <group expand="0" string="Group By">
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+        <record id="approval_approval_act_window" model="ir.actions.act_window">
+            <field name="name">Approvals</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">approval.approval</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    There is no examples click here to add new ModelTitle.
+                </p>
+            </field>
+        </record>
+
+    <menuitem id="menu_approval_root"
+              name="Approval"
+              sequence="10"/>
+
+    <menuitem id="menu_My_approval"
+              name="My approval"
+              parent="menu_approval_root"
+              action="approval_approval_act_window"
+              sequence="10"/>
+
+
+</odoo>
